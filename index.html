@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>臺南市國小數學科歷年學力檢測題庫系統 (109～114年 全年級 3-6年級)</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-light: #eff6ff;
+      --secondary: #0d9488;
+      --accent: #f59e0b;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --border-focus: #3b82f6;
+      --radius: 10px;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* 頂部導覽 Header */
+    header {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+      color: white;
+      padding: 22px 32px;
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
+      max-width: 1560px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .title-row h1 {
+      font-size: 23px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge-total {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-group {
+      display: flex;
+      background: rgba(0, 0, 0, 0.18);
+      padding: 4px;
+      border-radius: 8px;
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: none;
+      color: white;
+      padding: 6px 13px;
+      border-radius: 6px;
+      font-size: 13.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .filter-btn.active {
+      background: white;
+      color: #1e3a8a;
+      font-weight: 700;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 280px;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 8px 16px 8px 36px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.95);
+      color: var(--text-main);
+      font-size: 14px;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .search-input:focus {
+      background: white;
+      border-color: white;
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      color: #64748b;
+    }
+
+    /* 主畫面佈局 */
+    .app-layout {
+      max-width: 1560px;
+      margin: 20px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* 左側邊欄 Sidebar */
+    .sidebar {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 146px;
+      max-height: calc(100vh - 170px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar-header {
+      padding: 14px 18px;
+      background: #f1f5f9;
+      border-bottom: 1px solid var(--border);
+      font-weight: 700;
+      font-size: 14.5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sidebar-content {
+      overflow-y: auto;
+      padding: 10px;
+      flex: 1;
+    }
+
+    .indicator-group-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 10px 10px 4px 10px;
+      letter-spacing: 0.5px;
+      border-top: 1px solid #f1f5f9;
+      margin-top: 6px;
+    }
+    .indicator-group-title:first-child {
+      border-top: none;
+      margin-top: 0;
+    }
+
+    .indicator-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 12px;
+      border-radius: 6px;
+      margin-bottom: 3px;
+      cursor: pointer;
+      font-size: 13.5px;
+      color: var(--text-main);
+      transition: all 0.15s;
+    }
+
+    .indicator-item:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .indicator-item.active {
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+    }
+
+    .indicator-badge {
+      background: #e2e8f0;
+      color: #475569;
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-weight: 600;
+      white-space: nowrap;
+      margin-left: 6px;
+    }
+
+    .indicator-item.active .indicator-badge {
+      background: rgba(255, 255, 255, 0.25);
+      color: white;
+    }
+
+    /* 右側主要內容區 Main Content */
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* 指標橫幅 */
+    .indicator-banner {
+      background: white;
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .banner-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .banner-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1e3a8a;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .banner-desc {
+      font-size: 14.5px;
+      color: #475569;
+      line-height: 1.6;
+    }
+
+    .stats-chip-container {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .chip {
+      background: #f1f5f9;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      color: #334155;
+      font-weight: 500;
+    }
+
+    /* 試題卡片列表 */
+    .questions-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .q-card {
+      background: white;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      transition: all 0.2s;
+    }
+
+    .q-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: #cbd5e1;
+    }
+
+    .q-card-header {
+      padding: 13px 20px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .q-meta-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tag-year {
+      background: #1e3a8a;
+      color: white;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .tag-grade {
+      background: #dbeafe;
+      color: #1e40af;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .tag-num {
+      font-weight: 700;
+      color: var(--text-main);
+      font-size: 14px;
+    }
+
+    .q-meta-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+    }
+
+    .meta-stat {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 600;
+    }
+
+    .stat-pass {
+      color: #059669;
+    }
+
+    .stat-diff {
+      color: #d97706;
+    }
+
+    .tag-ans {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    /* 題目圖片區 */
+    .q-card-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .img-wrapper {
+      background: #ffffff;
+      border: 1px solid #f1f5f9;
+      border-radius: 8px;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      cursor: zoom-in;
+      transition: background 0.2s;
+    }
+
+    .img-wrapper:hover {
+      background: #f8fafc;
+    }
+
+    .q-img {
+      max-width: 100%;
+      height: auto;
+      max-height: 480px;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+
+    /* 迷思分析收合按鈕與內容 */
+    .analysis-toggle {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 16px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #2563eb;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s;
+    }
+
+    .analysis-toggle:hover {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+
+    .analysis-panel {
+      display: none;
+      padding: 16px 20px;
+      background: #f8fafc;
+      border-radius: 6px;
+      border-left: 4px solid #2563eb;
+      font-size: 13.5px;
+      line-height: 1.7;
+    }
+
+    .analysis-panel.open {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .analysis-sec-title {
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .analysis-sec-content {
+      color: #475569;
+    }
+
+    /* 空狀態 */
+    .empty-state {
+      padding: 60px 20px;
+      text-align: center;
+      color: #64748b;
+      background: white;
+      border-radius: var(--radius);
+      border: 1px dashed var(--border);
+    }
+
+    .empty-state h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+      color: #334155;
+    }
+
+    /* 燈箱 Modal */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+      cursor: zoom-out;
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+    }
+
+    .modal-img {
+      max-width: 92vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      background: white;
+      cursor: default;
+    }
+
+    @media (max-width: 960px) {
+      .app-layout {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        position: static;
+        max-height: 320px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 頂部導覽 -->
+  <header>
+    <div class="header-content">
+      <div class="title-row">
+        <h1>
+          <span>📊</span> 臺南市國小數學歷年學力檢測指標題庫 (109～114年 全年級)
+        </h1>
+        <div class="badge-total" id="totalBadge">收錄試題：598 題</div>
+      </div>
+
+      <div class="filter-bar">
+        <!-- 年級篩選 -->
+        <div class="btn-group" id="gradeGroup">
+          <button class="filter-btn active" data-grade="all">全部年級</button>
+          <button class="filter-btn" data-grade="3">三年級 (150題)</button>
+          <button class="filter-btn" data-grade="4">四年級 (150題)</button>
+          <button class="filter-btn" data-grade="5">五年級 (150題)</button>
+          <button class="filter-btn" data-grade="6">六年級 (148題)</button>
+        </div>
+
+        <!-- 向度篩選 -->
+        <div class="btn-group" id="domainGroup">
+          <button class="filter-btn active" data-domain="all">全部向度</button>
+          <button class="filter-btn" data-domain="N">數與計算 (N)</button>
+          <button class="filter-btn" data-domain="S">空間與形狀 (S)</button>
+          <button class="filter-btn" data-domain="R">關係 (R)</button>
+          <button class="filter-btn" data-domain="D">資料 (D)</button>
+        </div>
+
+        <!-- 搜尋列 -->
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" class="search-input" id="searchInput" placeholder="搜尋指標代號 (如 N-5-3、S-6-3)、關鍵字 (如 因數、圓面積、速度)...">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主佈局 -->
+  <div class="app-layout">
+    <!-- 左側指標導覽樹 -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <span>📌 108課綱學習指標</span>
+        <span id="indicatorCount" style="font-size:12px; color: #64748b;">載入中...</span>
+      </div>
+      <div class="sidebar-content" id="sidebarList">
+        <!-- 動態渲染指標樹 -->
+      </div>
+    </aside>
+
+    <!-- 右側試題主視圖 -->
+    <main class="main-content">
+      <!-- 當前選取指標橫幅 -->
+      <div class="indicator-banner" id="indicatorBanner">
+        <div class="banner-top">
+          <div class="banner-title" id="bannerTitle">所有歷年試題</div>
+          <div class="stats-chip-container" id="bannerStats">
+            <span class="chip" id="bannerCount">共 598 題</span>
+          </div>
+        </div>
+        <div class="banner-desc" id="bannerDesc">
+          請從左側點選特定指標（例如 N-3-2、N-4-5、N-5-3、S-6-3 等），即刻對照 109～114 年該指標歷年出題題型、難易度變化與學生常犯迷思。
+        </div>
+      </div>
+
+      <!-- 試題卡片列表 -->
+      <div class="questions-grid" id="questionsGrid">
+        <!-- 動態渲染試題卡片 -->
+      </div>
+    </main>
+  </div>
+
+  <!-- 燈箱 Modal -->
+  <div class="modal-backdrop" id="imgModal" onclick="closeModal()">
+    <img src="" alt="題目大圖" class="modal-img" id="modalImg" onclick="event.stopPropagation()">
+  </div>
+
+  <!-- 載入資料庫 JS -->
+  <script src="data.js"></script>
+  <script>
+    // 狀態變數
+    let currentGrade = 'all';
+    let currentDomain = 'all';
+    let currentIndicator = null;
+    let searchQuery = '';
+
+    // 初始化
+    document.addEventListener('DOMContentLoaded', () => {
+      initFilterButtons();
+      renderSidebar();
+      renderQuestions();
+    });
+
+    // 篩選按鈕事件綁定
+    function initFilterButtons() {
+      // 年級按鈕
+      document.querySelectorAll('#gradeGroup .filter-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('#gradeGroup .filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentGrade = btn.dataset.grade;
+          currentIndicator = null; // 切換年級重設選取指標
+          renderSidebar();
+          renderQuestions();
+        });
+      });
+
+      // 向度按鈕
+      document.querySelectorAll('#domainGroup .filter-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('#domainGroup .filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentDomain = btn.dataset.domain;
+          currentIndicator = null;
+          renderSidebar();
+          renderQuestions();
+        });
+      });
+
+      // 搜尋框
+      const searchInput = document.getElementById('searchInput');
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value.trim().toLowerCase();
+        renderQuestions();
+      });
+    }
+
+    // 計算指標統計資料
+    function getIndicatorStats() {
+      const stats = {};
+      QUESTIONS_DATA.forEach(q => {
+        const ind = q.indicator || '未分類';
+        if (!stats[ind]) {
+          stats[ind] = { count: 0, grade: q.grade, domain: ind.charAt(0) };
+        }
+        // 如果當前有選特定年級，只計算該年級的出題數
+        if (currentGrade === 'all' || q.grade === parseInt(currentGrade)) {
+          stats[ind].count++;
+        }
+      });
+      return stats;
+    }
+
+    // 渲染左側邊欄
+    function renderSidebar() {
+      const sidebar = document.getElementById('sidebarList');
+      const stats = getIndicatorStats();
+      sidebar.innerHTML = '';
+
+      // 取得所有指標清單
+      let indicators = Object.keys(INDICATORS_META);
+
+      // 依年級篩選
+      if (currentGrade !== 'all') {
+        const gNum = currentGrade;
+        // 保留該年級指標，或在該年級測驗中出現過的複習指標
+        indicators = indicators.filter(ind => {
+          if (ind.includes(`-${gNum}-`)) return true;
+          // 若在該年級有出題，也納入顯示
+          if (stats[ind] && stats[ind].count > 0) return true;
+          return false;
+        });
+      }
+
+      // 依向度篩選
+      if (currentDomain !== 'all') {
+        indicators = indicators.filter(ind => ind.startsWith(currentDomain));
+      }
+
+      // 按向度分組
+      const domains = [
+        { key: 'N', name: '數與計算 / 量 (N)' },
+        { key: 'S', name: '空間與形狀 (S)' },
+        { key: 'R', name: '關係 (R)' },
+        { key: 'D', name: '資料與不確定性 (D)' }
+      ];
+
+      let totalShown = 0;
+
+      domains.forEach(d => {
+        const groupInds = indicators.filter(ind => ind.startsWith(d.key));
+        if (groupInds.length === 0) return;
+
+        const groupTitle = document.createElement('div');
+        groupTitle.className = 'indicator-group-title';
+        groupTitle.textContent = d.name;
+        sidebar.appendChild(groupTitle);
+
+        groupInds.forEach(ind => {
+          totalShown++;
+          const count = stats[ind] ? stats[ind].count : 0;
+          const item = document.createElement('div');
+          item.className = `indicator-item ${currentIndicator === ind ? 'active' : ''}`;
+          
+          const rawTitle = INDICATORS_META[ind] || '';
+          const shortTitle = rawTitle.split('（')[0].split('：')[0];
+
+          item.innerHTML = `
+            <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${ind} ${rawTitle}">
+              <strong>${ind}</strong> ${shortTitle}
+            </span>
+            <span class="indicator-badge">${count} 題</span>
+          `;
+          item.addEventListener('click', () => {
+            if (currentIndicator === ind) {
+              currentIndicator = null;
+            } else {
+              currentIndicator = ind;
+            }
+            renderSidebar();
+            renderQuestions();
+          });
+          sidebar.appendChild(item);
+        });
+      });
+
+      document.getElementById('indicatorCount').textContent = `共 ${totalShown} 個指標`;
+    }
+
+    // 渲染右側試題清單
+    function renderQuestions() {
+      const grid = document.getElementById('questionsGrid');
+      const bannerTitle = document.getElementById('bannerTitle');
+      const bannerDesc = document.getElementById('bannerDesc');
+      const bannerCount = document.getElementById('bannerCount');
+
+      // 篩選題目
+      let filtered = QUESTIONS_DATA.filter(q => {
+        // 年級
+        if (currentGrade !== 'all' && q.grade !== parseInt(currentGrade)) return false;
+        // 向度
+        if (currentDomain !== 'all' && !q.indicator.startsWith(currentDomain)) return false;
+        // 指定指標
+        if (currentIndicator && q.indicator !== currentIndicator) return false;
+        // 關鍵字搜尋
+        if (searchQuery) {
+          const matchCode = q.code.toLowerCase().includes(searchQuery);
+          const matchInd = q.indicator.toLowerCase().includes(searchQuery);
+          const matchTitle = (q.indicator_title || '').toLowerCase().includes(searchQuery);
+          const matchGoal = (q.eval_goal || '').toLowerCase().includes(searchQuery);
+          const matchMis = (q.misconception || '').toLowerCase().includes(searchQuery);
+          const matchYear = String(q.year).includes(searchQuery);
+          const matchGrade = `${q.grade}年級`.includes(searchQuery);
+          if (!matchCode && !matchInd && !matchTitle && !matchGoal && !matchMis && !matchYear && !matchGrade) {
+            return false;
+          }
+        }
+        return true;
+      });
+
+      // 依年份排序 (新到舊 114 -> 109)，同年份依題號
+      filtered.sort((a, b) => b.year - a.year || a.q_num - b.q_num);
+
+      // 更新橫幅
+      if (currentIndicator) {
+        bannerTitle.textContent = `【${currentIndicator}】${INDICATORS_META[currentIndicator] || ''}`;
+        bannerDesc.innerHTML = `<strong>歷年考情分析：</strong>此指標在選定條件下累計出題 <strong>${filtered.length}</strong> 次。以下依年份列出所有試題，您可以比對題幹情境與學生選項迷思。`;
+      } else {
+        const gradeText = currentGrade === 'all' ? '國小數學全體（3~6年級）' : `${currentGrade} 年級`;
+        bannerTitle.textContent = `${gradeText} 歷年試題`;
+        bannerDesc.textContent = '請從左側點選特定指標（例如 N-3-2、N-4-5、N-5-3、S-6-3 等），即刻對照 109～114 年該指標歷年出題題型、難易度變化與學生常犯迷思。';
+      }
+      bannerCount.textContent = `共 ${filtered.length} 題`;
+
+      // 渲染卡片
+      grid.innerHTML = '';
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <h3>查無符合條件的試題</h3>
+            <p>請嘗試調整搜尋關鍵字，或切換左側指標與年級篩選條件。</p>
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach((q, idx) => {
+        const card = document.createElement('div');
+        card.className = 'q-card';
+        card.id = `q_${q.year}_${q.grade}_${q.q_num}`;
+
+        const passRateHtml = q.pass_rate ? `<span class="meta-stat stat-pass">通過率 ${q.pass_rate}</span>` : '';
+        const diffHtml = q.discrimination ? `<span class="meta-stat stat-diff">鑑別度 ${q.discrimination}</span>` : '';
+        const ansHtml = q.answer ? `<span class="tag-ans">正答：${q.answer}</span>` : '';
+        const cogHtml = q.cognitive ? `<span class="chip">${q.cognitive}</span>` : '';
+
+        // 試題分析內容
+        let analysisBody = '';
+        if (q.eval_goal) {
+          analysisBody += `
+            <div>
+              <div class="analysis-sec-title">🎯 評量目標</div>
+              <div class="analysis-sec-content">${q.eval_goal}</div>
+            </div>
+          `;
+        }
+        if (q.misconception) {
+          analysisBody += `
+            <div>
+              <div class="analysis-sec-title">⚠️ 選項與迷思概念分析</div>
+              <div class="analysis-sec-content">${q.misconception}</div>
+            </div>
+          `;
+        }
+        if (q.teaching_rec) {
+          analysisBody += `
+            <div>
+              <div class="analysis-sec-title">💡 教學與補救建議</div>
+              <div class="analysis-sec-content">${q.teaching_rec}</div>
+            </div>
+          `;
+        }
+        if (!analysisBody) {
+          analysisBody = '<div class="analysis-sec-content">無詳細分析文字</div>';
+        }
+
+        card.innerHTML = `
+          <div class="q-card-header">
+            <div class="q-meta-left">
+              <span class="tag-year">${q.year}年</span>
+              <span class="tag-grade">${q.grade}年級</span>
+              <span class="tag-num">第 ${q.q_num} 題</span>
+              <span class="chip" style="font-weight:700; color:#1e3a8a;">${q.indicator}</span>
+              ${cogHtml}
+            </div>
+            <div class="q-meta-right">
+              ${passRateHtml}
+              ${diffHtml}
+              ${ansHtml}
+            </div>
+          </div>
+          <div class="q-card-body">
+            <div class="img-wrapper" onclick="openModal('${q.image}')" title="點擊放大檢視題目">
+              <img src="${q.image}" alt="${q.code}" class="q-img" loading="lazy">
+            </div>
+            <div class="analysis-toggle" onclick="toggleAnalysis(${idx})">
+              <span>📊 檢視本題誘答率、迷思概念與教學建議</span>
+              <span id="toggle_icon_${idx}">▼</span>
+            </div>
+            <div class="analysis-panel" id="analysis_panel_${idx}">
+              ${analysisBody}
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // 展開/收合分析面板
+    function toggleAnalysis(idx) {
+      const panel = document.getElementById(`analysis_panel_${idx}`);
+      const icon = document.getElementById(`toggle_icon_${idx}`);
+      if (panel.classList.contains('open')) {
+        panel.classList.remove('open');
+        icon.textContent = '▼';
+      } else {
+        panel.classList.add('open');
+        icon.textContent = '▲';
+      }
+    }
+
+    // 燈箱開啟/關閉
+    function openModal(imgSrc) {
+      const modal = document.getElementById('imgModal');
+      const img = document.getElementById('modalImg');
+      img.src = imgSrc;
+      modal.classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('imgModal').classList.remove('active');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+  </script>
+</body>
+</html>
