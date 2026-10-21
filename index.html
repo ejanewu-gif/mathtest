@@ -697,12 +697,17 @@
 
       // 依年級篩選
       if (currentGrade !== 'all') {
-        const gNum = currentGrade;
-        // 保留該年級指標，或在該年級測驗中出現過的複習指標
+        const gNum = parseInt(currentGrade);
         indicators = indicators.filter(ind => {
-          if (ind.includes(`-${gNum}-`)) return true;
-          // 若在該年級有出題，也納入顯示
-          if (stats[ind] && stats[ind].count > 0) return true;
+          const m = ind.match(/-(\d)-/);
+          if (m) {
+            const indGrade = parseInt(m[1]);
+            // 當前年級專屬指標
+            if (indGrade === gNum) return true;
+            // 僅允許低於當前年級的複習指標（且該年級確實有出過此題）
+            if (indGrade < gNum && stats[ind] && stats[ind].count > 0) return true;
+            return false;
+          }
           return false;
         });
       }
