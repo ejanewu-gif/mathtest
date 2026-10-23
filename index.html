@@ -15,7 +15,9 @@
       --card-bg: #ffffff;
       --text-main: #1e293b;
       --text-muted: #64748b;
-      --border: #e2e8f0;
+      --border: #cbd5e1;
+      --border-dark: #94a3b8;
+      --border-light: #e2e8f0;
       --border-focus: #3b82f6;
       --radius: 10px;
       --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
@@ -167,7 +169,7 @@
     .sidebar {
       background: var(--card-bg);
       border-radius: var(--radius);
-      border: 1px solid var(--border);
+      border: 2px solid var(--border);
       box-shadow: var(--shadow-sm);
       position: sticky;
       top: 146px;
@@ -178,9 +180,9 @@
     }
 
     .sidebar-header {
-      padding: 14px 18px;
       background: #f1f5f9;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 2px solid var(--border);
+      padding: 14px 18px;
       font-weight: 700;
       font-size: 14.5px;
       display: flex;
@@ -261,8 +263,9 @@
       background: white;
       border-radius: var(--radius);
       padding: 20px 24px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
+      border: 2px solid var(--border);
+      border-left: 6px solid #2563eb;
+      box-shadow: 0 4px 8px -1px rgb(0 0 0 / 0.08);
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -317,8 +320,8 @@
     .q-card {
       background: white;
       border-radius: var(--radius);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
+      border: 2px solid var(--border);
+      box-shadow: 0 3px 8px -1px rgb(0 0 0 / 0.08);
       overflow: hidden;
       transition: all 0.2s;
     }
@@ -435,7 +438,7 @@
     /* 迷思分析收合按鈕與內容 */
     .analysis-toggle {
       background: #f8fafc;
-      border: 1px solid var(--border);
+      border: 2px solid var(--border);
       border-radius: 6px;
       padding: 10px 16px;
       font-size: 13.5px;
@@ -604,19 +607,33 @@
       }
     }
     .guide-col {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
       border-radius: 8px;
-      padding: 12px 14px;
+      padding: 14px 16px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .col-direction {
+      background: #f0f9ff;
+      border: 1.5px solid #7dd3fc;
+      border-left: 5px solid #0284c7;
+    }
+    .col-limits {
+      background: #fffbeb;
+      border: 1.5px solid #fcd34d;
+      border-left: 5px solid #d97706;
+    }
+    .col-trends {
+      background: #faf5ff;
+      border: 1.5px solid #d8b4fe;
+      border-left: 5px solid #7c3aed;
     }
     .col-head {
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 13.5px;
+      gap: 8px;
+      font-size: 14px;
       font-weight: 700;
     }
     .col-direction .col-head {
@@ -626,7 +643,7 @@
       color: #b45309;
     }
     .col-trends .col-head {
-      color: #4338ca;
+      color: #5b21b6;
     }
     .col-body {
       font-size: 13px;
@@ -736,10 +753,6 @@
               <div class="col-body" id="guideTrends"></div>
             </div>
           </div>
-        </div>
-      </div>
-        <div class="banner-desc" id="bannerDesc">
-          請從左側點選特定指標（例如 N-3-2、N-4-5、N-5-3、S-6-3 等），即刻對照 109～114 年該指標歷年出題題型、難易度變化與學生常犯迷思。
         </div>
       </div>
 
