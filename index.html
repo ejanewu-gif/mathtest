@@ -538,6 +538,102 @@
         max-height: 320px;
       }
     }
+  
+    /* 統計晶片 Badges */
+    .chip-total {
+      background: #eff6ff !important;
+      color: #1e40af !important;
+      border: 1px solid #bfdbfe !important;
+      font-weight: 600;
+    }
+    .chip-cu {
+      background: #ecfdf5 !important;
+      color: #047857 !important;
+      border: 1px solid #a7f3d0 !important;
+      font-weight: 600;
+    }
+    .chip-pe {
+      background: #f5f3ff !important;
+      color: #6d28d9 !important;
+      border: 1px solid #ddd6fe !important;
+      font-weight: 600;
+    }
+    .chip-ps {
+      background: #fffbeb !important;
+      color: #b45309 !important;
+      border: 1px solid #fde68a !important;
+      font-weight: 600;
+    }
+
+    /* 指標命題指引面板 */
+    .indicator-guide-box {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .guide-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .guide-badge {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e3a8a;
+      background: #e0e7ff;
+      padding: 3px 10px;
+      border-radius: 6px;
+    }
+    .guide-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .guide-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 900px) {
+      .guide-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .guide-col {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .col-head {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13.5px;
+      font-weight: 700;
+    }
+    .col-direction .col-head {
+      color: #0369a1;
+    }
+    .col-limits .col-head {
+      color: #b45309;
+    }
+    .col-trends .col-head {
+      color: #4338ca;
+    }
+    .col-body {
+      font-size: 13px;
+      color: #334155;
+      line-height: 1.6;
+    }
+
   </style>
 </head>
 <body>
@@ -596,13 +692,52 @@
     <!-- 右側試題主視圖 -->
     <main class="main-content">
       <!-- 當前選取指標橫幅 -->
+            <!-- 當前指標資訊與考情透析 -->
       <div class="indicator-banner" id="indicatorBanner">
         <div class="banner-top">
-          <div class="banner-title" id="bannerTitle">所有歷年試題</div>
+          <div class="banner-title" id="bannerTitle">所有年級試題</div>
           <div class="stats-chip-container" id="bannerStats">
-            <span class="chip" id="bannerCount">共 598 題</span>
+            <span class="chip chip-total" id="bannerCount">共 598 題</span>
+            <span class="chip chip-cu" id="bannerCU" style="display:none;">💡 概念理解 0 題</span>
+            <span class="chip chip-pe" id="bannerPE" style="display:none;">⚙️ 程序執行 0 題</span>
+            <span class="chip chip-ps" id="bannerPS" style="display:none;">🧩 解題思考 0 題</span>
           </div>
         </div>
+        <div class="banner-desc" id="bannerDesc">
+          請從左側點選特定指標（例如 N-3-2、N-4-5、N-5-3、S-6-3 等），即可比對 109～114 年該指標歷年出題題型、難易度變化與學生常見迷思。
+        </div>
+
+        <!-- 命題方向 / 限制 / 歷年走向分析面板 -->
+        <div class="indicator-guide-box" id="indicatorGuideBox" style="display: none;">
+          <div class="guide-header">
+            <span class="guide-badge">📌 108課綱命題指引與歷年考情透析</span>
+            <span class="guide-subtitle">依據教育部課綱規範與 109～114 學力檢測數據庫深度解構</span>
+          </div>
+          <div class="guide-grid">
+            <div class="guide-col col-direction">
+              <div class="col-head">
+                <span class="head-icon">🎯</span>
+                <span class="head-text">命題核心方向</span>
+              </div>
+              <div class="col-body" id="guideDirection"></div>
+            </div>
+            <div class="guide-col col-limits">
+              <div class="col-head">
+                <span class="head-icon">⚠️</span>
+                <span class="head-text">課綱命題限制</span>
+              </div>
+              <div class="col-body" id="guideLimits"></div>
+            </div>
+            <div class="guide-col col-trends">
+              <div class="col-head">
+                <span class="head-icon">🔍</span>
+                <span class="head-text">歷年走向與高頻迷思</span>
+              </div>
+              <div class="col-body" id="guideTrends"></div>
+            </div>
+          </div>
+        </div>
+      </div>
         <div class="banner-desc" id="bannerDesc">
           請從左側點選特定指標（例如 N-3-2、N-4-5、N-5-3、S-6-3 等），即刻對照 109～114 年該指標歷年出題題型、難易度變化與學生常犯迷思。
         </div>
@@ -622,6 +757,7 @@
 
   <!-- 載入資料庫 JS -->
   <script src="data.js"></script>
+  <script src="indicator_guide.js"></script>
   <script>
     // 狀態變數
     let currentGrade = 'all';
@@ -801,16 +937,64 @@
       // 依年份排序 (新到舊 114 -> 109)，同年份依題號
       filtered.sort((a, b) => b.year - a.year || a.q_num - b.q_num);
 
-      // 更新橫幅
+      // 統計認知歷程 (概念理解、程序執行、解題思考)
+      let countCU = 0, countPE = 0, countPS = 0;
+      filtered.forEach(q => {
+        const cog = (q.cognitive || '').trim();
+        if (cog.includes('概念') || cog.includes('概念') || cog === 'CU') {
+          countCU++;
+        } else if (cog.includes('程序') || cog === 'PE') {
+          countPE++;
+        } else if (cog.includes('思考') || cog === 'PS') {
+          countPS++;
+        }
+      });
+
+      // 更新統計 Chips
+      const bannerCount = document.getElementById('bannerCount');
+      const bannerCU = document.getElementById('bannerCU');
+      const bannerPE = document.getElementById('bannerPE');
+      const bannerPS = document.getElementById('bannerPS');
+      
+      bannerCount.textContent = `共 ${filtered.length} 題`;
+      if (filtered.length > 0) {
+        bannerCU.style.display = 'inline-flex';
+        bannerCU.textContent = `💡 概念理解 ${countCU} 題`;
+        bannerPE.style.display = 'inline-flex';
+        bannerPE.textContent = `⚙️ 程序執行 ${countPE} 題`;
+        bannerPS.style.display = 'inline-flex';
+        bannerPS.textContent = `🧩 解題思考 ${countPS} 題`;
+      } else {
+        bannerCU.style.display = 'none';
+        bannerPE.style.display = 'none';
+        bannerPS.style.display = 'none';
+      }
+
+      // 指標命題指引面板
+      const guideBox = document.getElementById('indicatorGuideBox');
+      const guideDir = document.getElementById('guideDirection');
+      const guideLim = document.getElementById('guideLimits');
+      const guideTrd = document.getElementById('guideTrends');
+
       if (currentIndicator) {
         bannerTitle.textContent = `【${currentIndicator}】${INDICATORS_META[currentIndicator] || ''}`;
-        bannerDesc.innerHTML = `<strong>歷年考情分析：</strong>此指標在選定條件下累計出題 <strong>${filtered.length}</strong> 次。以下依年份列出所有試題，您可以比對題幹情境與學生選項迷思。`;
+        bannerDesc.innerHTML = `<strong>歷年考情分析：</strong>此指標累計出題 <strong>${filtered.length}</strong> 次（概念理解 ${countCU} 題、程序執行 ${countPE} 題、解題思考 ${countPS} 題）。以下整理課綱核心方向、命題規範與歷年考古題走向供您參照：`;
+        
+        if (typeof INDICATORS_GUIDE !== 'undefined' && INDICATORS_GUIDE[currentIndicator]) {
+          const info = INDICATORS_GUIDE[currentIndicator];
+          guideDir.textContent = info.direction || '暫無命題方向指引';
+          guideLim.textContent = info.limits || '遵循108課綱規範';
+          guideTrd.textContent = info.trends || '暫無歷年走向分析';
+          guideBox.style.display = 'flex';
+        } else {
+          guideBox.style.display = 'none';
+        }
       } else {
-        const gradeText = currentGrade === 'all' ? '國小數學全體（3~6年級）' : `${currentGrade} 年級`;
+        const gradeText = currentGrade === 'all' ? '國小數學全（3~6年級）' : `${currentGrade} 年級`;
         bannerTitle.textContent = `${gradeText} 歷年試題`;
-        bannerDesc.textContent = '請從左側點選特定指標（例如 N-3-2、N-4-5、N-5-3、S-6-3 等），即刻對照 109～114 年該指標歷年出題題型、難易度變化與學生常犯迷思。';
+        bannerDesc.textContent = '請從左側點選特定指標（例如 N-3-2、N-4-5、N-5-3、S-6-3 等），即可檢視各指標的命題核心方向、課綱限制、歷年走向迷思，以及概念理解／程序執行／解題思考之題數統計。';
+        guideBox.style.display = 'none';
       }
-      bannerCount.textContent = `共 ${filtered.length} 題`;
 
       // 渲染卡片
       grid.innerHTML = '';
