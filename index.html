@@ -841,20 +841,12 @@
       // 取得所有指標清單
       let indicators = Object.keys(INDICATORS_META);
 
-      // 依年級篩選
+      // 依年級篩選：嚴格僅顯示當前年級所屬之 108 課綱指標
       if (currentGrade !== 'all') {
         const gNum = parseInt(currentGrade);
         indicators = indicators.filter(ind => {
           const m = ind.match(/-(\d)-/);
-          if (m) {
-            const indGrade = parseInt(m[1]);
-            // 當前年級專屬指標
-            if (indGrade === gNum) return true;
-            // 僅允許低於當前年級的複習指標（且該年級確實有出過此題）
-            if (indGrade < gNum && stats[ind] && stats[ind].count > 0) return true;
-            return false;
-          }
-          return false;
+          return m && parseInt(m[1]) === gNum;
         });
       }
 
@@ -926,12 +918,8 @@
         if (currentIndicator) {
           if (q.indicator !== currentIndicator) return false;
         } else {
-          // 未指定指標時，依上方年級與向度按鈕篩選
-          if (currentGrade !== 'all') {
-            const m = q.indicator.match(/-(\d)-/);
-            const indGrade = m ? parseInt(m[1]) : q.grade;
-            if (q.grade !== parseInt(currentGrade) && indGrade !== parseInt(currentGrade)) return false;
-          }
+          // 未指定指標時，依上方年級按鈕（施測年級）與向度按鈕篩選
+          if (currentGrade !== 'all' && q.grade !== parseInt(currentGrade)) return false;
           if (currentDomain !== 'all' && !q.indicator.startsWith(currentDomain)) return false;
         }
         // 關鍵字搜尋
