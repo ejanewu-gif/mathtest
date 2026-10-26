@@ -827,10 +827,7 @@
         if (!stats[ind]) {
           stats[ind] = { count: 0, grade: q.grade, domain: ind.charAt(0) };
         }
-        // 如果當前有選特定年級，只計算該年級的出題數
-        if (currentGrade === 'all' || q.grade === parseInt(currentGrade)) {
-          stats[ind].count++;
-        }
+        stats[ind].count++;
       });
       return stats;
     }
@@ -925,12 +922,18 @@
 
       // 篩選題目
       let filtered = QUESTIONS_DATA.filter(q => {
-        // 年級
-        if (currentGrade !== 'all' && q.grade !== parseInt(currentGrade)) return false;
-        // 向度
-        if (currentDomain !== 'all' && !q.indicator.startsWith(currentDomain)) return false;
-        // 指定指標
-        if (currentIndicator && q.indicator !== currentIndicator) return false;
+        // 若已點選特定指標，優先展示該指標全部試題（支援 108 課綱跨年級整併之試題，如 4-n-07 歸入 N-5-6）
+        if (currentIndicator) {
+          if (q.indicator !== currentIndicator) return false;
+        } else {
+          // 未指定指標時，依上方年級與向度按鈕篩選
+          if (currentGrade !== 'all') {
+            const m = q.indicator.match(/-(\d)-/);
+            const indGrade = m ? parseInt(m[1]) : q.grade;
+            if (q.grade !== parseInt(currentGrade) && indGrade !== parseInt(currentGrade)) return false;
+          }
+          if (currentDomain !== 'all' && !q.indicator.startsWith(currentDomain)) return false;
+        }
         // 關鍵字搜尋
         if (searchQuery) {
           const matchCode = q.code.toLowerCase().includes(searchQuery);
@@ -1029,6 +1032,18 @@
         const diffHtml = q.discrimination ? `<span class="meta-stat stat-diff">鑑別度 ${q.discrimination}</span>` : '';
         const ansHtml = q.answer ? `<span class="tag-ans">正答：${q.answer}</span>` : '';
         const cogHtml = q.cognitive ? `<span class="chip">${q.cognitive}</span>` : '';
+        
+        // 97課綱與108課綱年級微調標記
+        let legacyChipHtml = '';
+        if (q.raw_indicator && q.raw_indicator !== q.indicator) {
+          const m = q.indicator.match(/-(\d)-/);
+          const indGrade = m ? parseInt(m[1]) : q.grade;
+          if (q.grade !== indGrade) {
+            legacyChipHtml = `<span class="chip" style="background:#fef3c7; color:#92400e; font-weight:600;" title="108課綱年級微調：原${q.grade}年級出題，108課綱正式歸入${indGrade}年級">原97課綱 ${q.raw_indicator} ➔ 108課綱移至${indGrade}年級</span>`;
+          } else {
+            legacyChipHtml = `<span class="chip" title="97課綱原分年細目：${q.raw_indicator}">原97指標：${q.raw_indicator}</span>`;
+          }
+        }
 
         // 試題分析內容
         let analysisBody = '';
@@ -1068,6 +1083,7 @@
               <span class="tag-num">第 ${q.q_num} 題</span>
               <span class="chip" style="font-weight:700; color:#1e3a8a;">${q.indicator}</span>
               ${cogHtml}
+              ${legacyChipHtml}
             </div>
             <div class="q-meta-right">
               ${passRateHtml}
